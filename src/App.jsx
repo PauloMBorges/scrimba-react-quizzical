@@ -1,11 +1,26 @@
 import Landing from "./components/Landing";
+import Game from "./components/Game";
+import { useState } from "react";
 
 function App() {
+  const [showGame, setShowGame] = useState(false);
+
+  function startGame() {
+    setShowGame(true); 
+  }
+
   return (
     <>
-      <div className="landing-container">
-        <Landing />
-      </div>
+      {showGame ? (
+        <div className="quiz-container">
+          < Game />
+        </div>
+      ) : (
+        <div className="landing-container">
+          <Landing onStartGame={startGame} />
+        </div>
+      )}
+
     </>
   );
 }
