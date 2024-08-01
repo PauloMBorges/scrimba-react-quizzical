@@ -3,12 +3,14 @@ import { v4 as uuidv4 } from "uuid";
 
 function Questions() {
   const [questions, setQuestions] = useState([]);
+  const [shuffledQuestions, setShuffledQuestions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [count, setCount] =
     useState(
       0
     ); /* if the user wants to play again, increases the count (run useEffect again) */
+  const [selectedAnswers, setSelectedAnswers] = useState({});
 
   useEffect(() => {
     async function fetchQuestions() {
@@ -20,6 +22,14 @@ function Questions() {
         const data = await response.json();
         if (data.results) {
           setQuestions(data.results);
+          const shuffled = data.results.map((question) => ({
+            ...question,
+            answers: shuffleArray([
+              ...question.incorrect_answers,
+              question.correct_answer,
+            ]),
+          }));
+          setShuffledQuestions(shuffled);
         } else {
           setError("No questions found");
         }
@@ -42,23 +52,47 @@ function Questions() {
     return <div>{error}</div>;
   }
 
+  function handleSelectedAnswer(questionIndex, answer) {
+    setSelectedAnswers((prevAnswers) => ({
+      ...prevAnswers,
+      [questionIndex]: answer,
+    }));
+  }
+
+  function checkAnswers() {
+    const correctAnswers = shuffledQuestions.map(
+      (question) => question.correct_answer
+    );
+    const userAnswers = Object.values(selectedAnswers);
+    const score = userAnswers.reduce(
+      (acc, answer, index) =>
+        answer === correctAnswers[index] ? acc + 1 : acc,
+      0
+    );
+    alert(`You got ${score} out of ${questions.length} correct!`);
+  }
+
   return (
     <div className="questions-container">
-      {questions.map((question) => (
+      {shuffledQuestions.map((question, index) => (
         <div key={uuidv4()} className="question">
           <h2>{decodeHtml(question.question)}</h2>
           <div className="answers">
-            {shuffleArray([
-              ...question.incorrect_answers,
-              question.correct_answer,
-            ]).map((answer) => (
-              <button key={uuidv4()} className="answer-btn">
+            {question.answers.map((answer) => (
+              <button
+                key={uuidv4()}
+                className={`answer-btn ${
+                  selectedAnswers[index] === answer ? "selected" : ""
+                }`}
+                onClick={() => handleSelectedAnswer(index, answer)}
+              >
                 {decodeHtml(answer)}
               </button>
             ))}
           </div>
         </div>
       ))}
+      <button onClick={checkAnswers}>Check Answers</button>
     </div>
   );
 }
