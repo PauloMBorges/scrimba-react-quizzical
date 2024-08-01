@@ -9,9 +9,10 @@
 }
 
 body {
-  background-color: #F5F7FB;
+  background-color: #f5f7fb;
   min-height: 100vh;
   width: 100%;
+  position: relative;
 }
 
 .landing-container {
@@ -58,8 +59,9 @@ body {
 
 .blob {
   position: absolute;
-  width: 200px; 
-  height: 200px; /
+  width: 300px;
+  height: 300px;
+  z-index: -1;
 }
 
 .blue-blob {
@@ -72,9 +74,15 @@ body {
   right: 0;
 }
 
+.small {
+  width: 175px;
+  height: 175px;
+}
+
 .questions-container {
   margin: 2rem;
   padding: 1rem;
+  max-width: 1200px;
 }
 
 .question {
@@ -88,4 +96,69 @@ body {
 .score-and-button {
   display: flex;
   gap: 2rem;
+  justify-content: center;
+  align-items: center;
+  margin-top: 3rem;
+}
+
+.game {
+  display: flex;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.answer-btn {
+  font-family: "Inter", sans-serif;
+  font-size: 1rem;
+  border: 1px solid #4d5b9e;
+  color: #1f254b;
+  background-color: transparent;
+  border-radius: 15px;
+  padding: 0.6rem 2rem;
+  cursor: pointer;
+  margin-top: 1.3rem;
+  margin-right: 1.3rem;
+}
+
+.answer-btn.selected {
+  background-color: #d6dbf5;
+  border: none;
+}
+
+.answer-divider {
+  border-top: 1px solid #dbdef0;
+  margin-top: 1.3rem;
+}
+
+.answer-btn.correct {
+  background-color: #94d7a2;
+  border: none;
+}
+
+.answer-btn.wrong {
+  background-color: #f8d7da;
+  border: none;
+  color: #434b7a;
+}
+
+.answer-btn.disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.check-btn {
+  font-family: "Inter", sans-serif;
+  font-size: 1.3rem;
+  font-weight: bold;
+  background-color: #4d5b9e;
+  color: #f5f7fb;
+  border-radius: 15px;
+  border: none;
+  padding: 1.2rem 2rem;
+  cursor: pointer;
+}
+
+.score-msg {
+  color: #293264;
+  font-size: 1.7rem;
 }

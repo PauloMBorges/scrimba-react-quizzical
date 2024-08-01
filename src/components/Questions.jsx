@@ -82,6 +82,24 @@ function Questions({ onPlayAgain, count }) {
     }
   }
 
+  function getButtonClass(questionIndex, answer) {
+    if (!answersChecked) {
+      return selectedAnswers[questionIndex] === answer ? "selected" : "";
+    }
+
+    const correctAnswer = shuffledQuestions[questionIndex].correct_answer;
+
+    if (answer === correctAnswer) {
+      return "correct";
+    }
+
+    if (selectedAnswers[questionIndex] === answer) {
+      return "wrong";
+    }
+
+    return "disabled";
+  }
+
   return (
     <div className="questions-container">
       {shuffledQuestions.map((question, index) => (
@@ -91,20 +109,23 @@ function Questions({ onPlayAgain, count }) {
             {question.answers.map((answer) => (
               <button
                 key={uuidv4()}
-                className={`answer-btn ${
-                  selectedAnswers[index] === answer ? "selected" : ""
-                }`}
+                className={`answer-btn ${getButtonClass(index, answer)}`}
                 onClick={() => handleSelectedAnswer(index, answer)}
+                disabled={answersChecked}
               >
                 {decodeHtml(answer)}
               </button>
             ))}
           </div>
+          <div className="answer-divider"></div>
         </div>
       ))}
       <div className="score-and-button">
-        {answersChecked && <p>{scoreMessage}</p>}
-        <button onClick={handleButtonClick}>
+        {answersChecked && <p className="score-msg">{scoreMessage}</p>}
+        <button
+          className="check-btn play-again-btn"
+          onClick={handleButtonClick}
+        >
           {answersChecked ? "Play Again" : "Check Answers"}
         </button>
       </div>
