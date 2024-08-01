@@ -1,15 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
 
-function Questions() {
+function Questions( { count }) {
   const [questions, setQuestions] = useState([]);
   const [shuffledQuestions, setShuffledQuestions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [count, setCount] =
-    useState(
-      0
-    ); /* if the user wants to play again, increases the count (run useEffect again) */
   const [selectedAnswers, setSelectedAnswers] = useState({});
 
   useEffect(() => {
