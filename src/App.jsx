@@ -1,5 +1,5 @@
-import Landing from "./components/Landing";
 import Game from "./components/Game";
+import Landing from "./components/Landing";
 import { useState } from "react";
 
 function App() {
