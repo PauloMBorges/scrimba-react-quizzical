@@ -8,6 +8,7 @@ function Questions({ onPlayAgain, count }) {
   const [error, setError] = useState(null);
   const [selectedAnswers, setSelectedAnswers] = useState({});
   const [answersChecked, setAnswersChecked] = useState(false);
+  const [scoreMessage, setScoreMessage] = useState("");
 
   useEffect(() => {
     async function fetchQuestions() {
@@ -66,8 +67,8 @@ function Questions({ onPlayAgain, count }) {
         answer === correctAnswers[index] ? acc + 1 : acc,
       0
     );
-    alert(`You got ${score} out of ${questions.length} correct!`);
-    setAnswersChecked(true); 
+    setScoreMessage(`You scored ${score} out of ${questions.length} correct!`);
+    setAnswersChecked(true); // Set answers checked state to true
   }
 
   function handleButtonClick() {
@@ -75,6 +76,7 @@ function Questions({ onPlayAgain, count }) {
       onPlayAgain(); // Call play again function if answers are checked
       setAnswersChecked(false); // Reset the answers checked state
       setSelectedAnswers({}); // Reset selected answers
+      setScoreMessage(""); // Reset score message
     } else {
       checkAnswers(); // Otherwise, check the answers
     }
@@ -100,9 +102,12 @@ function Questions({ onPlayAgain, count }) {
           </div>
         </div>
       ))}
-      <button onClick={handleButtonClick}>
-        {answersChecked ? "Play Again" : "Check Answers"}
-      </button>
+      <div className="score-and-button">
+        {answersChecked && <p>{scoreMessage}</p>}
+        <button onClick={handleButtonClick}>
+          {answersChecked ? "Play Again" : "Check Answers"}
+        </button>
+      </div>
     </div>
   );
 }

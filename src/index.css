@@ -85,3 +85,7 @@ body {
   font-size: 1.5rem;
 }
 
+.score-and-button {
+  display: flex;
+  gap: 2rem;
+}
