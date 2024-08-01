@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
 
-function Questions( { count }) {
+function Questions({ onPlayAgain, count }) {
   const [questions, setQuestions] = useState([]);
   const [shuffledQuestions, setShuffledQuestions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedAnswers, setSelectedAnswers] = useState({});
+  const [answersChecked, setAnswersChecked] = useState(false);
 
   useEffect(() => {
     async function fetchQuestions() {
@@ -66,6 +67,17 @@ function Questions( { count }) {
       0
     );
     alert(`You got ${score} out of ${questions.length} correct!`);
+    setAnswersChecked(true); 
+  }
+
+  function handleButtonClick() {
+    if (answersChecked) {
+      onPlayAgain(); // Call play again function if answers are checked
+      setAnswersChecked(false); // Reset the answers checked state
+      setSelectedAnswers({}); // Reset selected answers
+    } else {
+      checkAnswers(); // Otherwise, check the answers
+    }
   }
 
   return (
@@ -88,7 +100,9 @@ function Questions( { count }) {
           </div>
         </div>
       ))}
-      <button onClick={checkAnswers}>Check Answers</button>
+      <button onClick={handleButtonClick}>
+        {answersChecked ? "Play Again" : "Check Answers"}
+      </button>
     </div>
   );
 }
